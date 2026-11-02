@@ -70,7 +70,6 @@
       .currency-select-inline {
         appearance: none;
         -webkit-appearance: none;
-        background: currentColor;
         color: inherit;
         background-color: transparent;
         border: none;
@@ -101,6 +100,11 @@
 
       .currency-select-inline:focus-visible {
         outline: 2px solid #0066ff;
+      }
+      .currency-note {
+        font-size: 0.85rem;
+        opacity: 0.75;
+        margin: -1rem 0 1.75rem;
       }
     </style>
 
@@ -137,7 +141,6 @@
           <a href="index">Home</a><a href="services">Services</a
           ><a href="solutions">Solutions</a
           ><a href="pricing" aria-current="page">Pricing</a
-          ><a href="work">Project type</a><a href="about">About</a
           ><a href="contact">Contact</a>
         </nav>
         <div class="nav-actions">
@@ -192,18 +195,12 @@
             <div class="currency-tool">
               <label for="currencyPicker">Currency</label>
               <select id="currencyPicker" class="currency-select-inline" aria-label="Select pricing currency">
-                <option value="KES" data-rate="1" selected>🇰🇪 KES (KSh)</option>
-                <option value="USD" data-rate="0.0077">🇺🇸 USD ($)</option>
-                <option value="EUR" data-rate="0.0071">🇪🇺 EUR (€)</option>
-                <option value="GBP" data-rate="0.0061">🇬🇧 GBP (£)</option>
-                <option value="AED" data-rate="0.028">🇦🇪 AED</option>
-                <option value="CAD" data-rate="0.0105">🇨🇦 CAD (CA$)</option>
-                <option value="ZAR" data-rate="0.14">🇿🇦 ZAR (R)</option>
-                <option value="UGX" data-rate="28.5">🇺🇬 UGX (USh)</option>
-                <option value="TZS" data-rate="20.0">🇹ℤ TZS (TSh)</option>
+                <option value="KES" selected>🇰🇪 KES (KSh)</option>
               </select>
             </div>
           </div>
+
+          <p class="currency-note" data-currency-note hidden></p>
 
           <div class="grid-3">
             <article class="card price-card">
@@ -457,8 +454,7 @@
           <div>
             <div class="footer-title">Company</div>
             <div class="footer-links">
-              <a href="about">About</a><a href="work">Project type</a
-              ><a href="faq">FAQs</a>
+              <a href="about">About</a><a href="faq">FAQs</a>
             </div>
           </div>
           <div>
@@ -477,60 +473,76 @@
       </div>
     </footer>
 
-    <!-- Currency Switcher Script (Default KES) -->
+    <!-- Currency switcher and quote links (uses assets/currency.js) -->
+    <script src="assets/currency.js" defer></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        const SC = window.SkyCurrency;
         const picker = document.getElementById("currencyPicker");
-        const priceEls = document.querySelectorAll(".price");
+        const note = document.querySelector("[data-currency-note]");
+        if (!SC || !picker) return;
 
-        function formatNum(num, code) {
-          if (code === "KES" || code === "UGX" || code === "TZS") {
-            return Math.round(num).toLocaleString("en-US");
-          }
-          return Math.round(num).toLocaleString("en-US");
-        }
+        SC.populate(picker);
 
-        function updatePrices(code, rate) {
-          priceEls.forEach((el) => {
+        function updatePrices(code) {
+          document.querySelectorAll(".price").forEach((el) => {
             if (el.dataset.custom) return;
-
             const suffix = el.dataset.suffix ? `<small>${el.dataset.suffix}</small>` : "";
-            const isPlus = el.dataset.plus ? "+" : "";
-
+            const plus = el.dataset.plus ? "+" : "";
             if (el.dataset.kesMin && el.dataset.kesMax) {
-              const minVal = parseFloat(el.dataset.kesMin) * rate;
-              const maxVal = parseFloat(el.dataset.kesMax) * rate;
-              el.innerHTML = `${code} ${formatNum(minVal, code)}–${formatNum(maxVal, code)}${isPlus}${suffix}`;
+              el.innerHTML = SC.range(+el.dataset.kesMin, +el.dataset.kesMax, code) + plus + suffix;
             } else if (el.dataset.kesVal) {
-              const val = parseFloat(el.dataset.kesVal) * rate;
-              el.innerHTML = `${code} ${formatNum(val, code)}${isPlus}${suffix}`;
+              el.innerHTML = code + " " + SC.amount(+el.dataset.kesVal, code) + plus + suffix;
             }
           });
         }
 
-        picker.addEventListener("change", (e) => {
-          const selectedOption = picker.options[picker.selectedIndex];
-          const code = selectedOption.value;
-          const rate = parseFloat(selectedOption.dataset.rate);
-
-          updatePrices(code, rate);
-
-          try {
-            localStorage.setItem("skyshade-currency", code);
-          } catch (err) {}
-        });
-
-        // Load saved currency preference if set, otherwise default to KES
-        try {
-          const savedCurrency = localStorage.getItem("skyshade-currency") || "KES";
-          if (picker.querySelector(`option[value="${savedCurrency}"]`)) {
-            picker.value = savedCurrency;
-            const option = picker.querySelector(`option[value="${savedCurrency}"]`);
-            updatePrices(savedCurrency, parseFloat(option.dataset.rate));
-          }
-        } catch (err) {
-          updatePrices("KES", 1);
+        // Every quote button carries the package, its KES price and the chosen currency to the contact form.
+        function updateQuoteLinks(code) {
+          document.querySelectorAll(".price-card").forEach((card) => {
+            const link = card.querySelector('a.btn[href^="contact"]');
+            const priceEl = card.querySelector(".price");
+            if (!link || !priceEl) return;
+            if (!link.dataset.base) link.dataset.base = link.getAttribute("href");
+            const params = new URLSearchParams(link.dataset.base.split("?")[1] || "");
+            const title = card.querySelector("h3");
+            if (title) params.set("plan", title.textContent.trim());
+            if (priceEl.dataset.kesMin && priceEl.dataset.kesMax) {
+              params.set("min", priceEl.dataset.kesMin);
+              params.set("max", priceEl.dataset.kesMax);
+            } else if (priceEl.dataset.kesVal) {
+              params.set("min", priceEl.dataset.kesVal);
+              params.set("max", priceEl.dataset.kesVal);
+            }
+            if (priceEl.dataset.plus) params.set("plus", "1");
+            if (priceEl.dataset.suffix) params.set("per", "month");
+            params.set("cur", code);
+            link.setAttribute("href", "contact?" + params.toString() + "#contact-form");
+          });
         }
+
+        function apply(code) {
+          updatePrices(code);
+          updateQuoteLinks(code);
+          if (note) {
+            note.hidden = code === "KES";
+            note.innerHTML = code === "KES" ? "" :
+              "Amounts in " + code + " are approximate, converted from KES at " +
+              (SC.isLive
+                ? 'exchange rates as of ' + SC.asOf + ' (<a href="https://www.exchangerate-api.com" rel="noopener">Rates By Exchange Rate API</a>)'
+                : "indicative rates (" + SC.asOf + ")") +
+              ". Your quotation will confirm the final currency and amount.";
+          }
+        }
+
+        picker.value = SC.getSaved();
+        apply(picker.value);
+        window.addEventListener("skyshade:rates", () => apply(picker.value));
+
+        picker.addEventListener("change", () => {
+          SC.save(picker.value);
+          apply(picker.value);
+        });
       });
     </script>
 

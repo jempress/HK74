@@ -71,6 +71,39 @@
         background-color: #1e242b;
         color: #f3f4f6;
       }
+      .package-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 10px 16px;
+        padding: 14px 16px;
+        margin: 0 0 1.25rem;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-left: 4px solid #1e86da;
+        border-radius: 12px;
+        font-size: 0.95rem;
+      }
+      html[data-theme="dark"] .package-summary {
+        border-color: rgba(255, 255, 255, 0.18);
+        border-left-color: #1e86da;
+      }
+      .package-summary[hidden] { display: none; }
+      .rates-credit { display: block; margin-top: 6px; font-size: 0.8rem; opacity: 0.75; }
+      .rates-credit[hidden] { display: none; }
+      .package-summary .package-label {
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        opacity: 0.7;
+      }
+      .package-summary small { display: block; opacity: 0.75; margin-top: 2px; }
+      .package-actions { display: flex; gap: 14px; align-items: center; }
+      .package-actions button {
+        background: none; border: 0; padding: 0; font: inherit;
+        color: inherit; text-decoration: underline; cursor: pointer;
+      }
     </style>
 
     <script>
@@ -105,7 +138,7 @@
         <nav class="nav-links" data-nav aria-label="Main navigation">
           <a href="index">Home</a><a href="services">Services</a
           ><a href="solutions">Solutions</a><a href="pricing">Pricing</a
-          ><a href="work">Project type</a><a href="about">About</a
+          ><a href="about">About</a
           ><a href="contact" aria-current="page">Contact</a>
         </nav>
         <div class="nav-actions">
@@ -171,6 +204,18 @@
           <div class="form-card" id="contact-form">
             <span class="eyebrow">Project enquiry</span>
             <h2>Tell us about your project.</h2>
+            <div class="package-summary" id="packageSummary" hidden>
+              <div>
+                <span class="package-label">Package you selected</span>
+                <strong data-pkg-name></strong>
+                <span data-pkg-price></span>
+                <small>Indicative price only. Your final quotation depends on scope.</small>
+              </div>
+              <div class="package-actions">
+                <a href="pricing">Change</a>
+                <button type="button" data-pkg-clear>Remove</button>
+              </div>
+            </div>
             <form
               data-contact-form
               action="https://formspree.io/f/xeaakjdq"
@@ -229,27 +274,23 @@
                   <div class="label-with-currency">
                     <label for="budget">Estimated budget</label>
                     <select id="formCurrencyPicker" class="currency-select-inline" aria-label="Select currency for budget ranges">
-                      <option value="KES" data-rate="1">🇰🇪 KES</option>
-                      <option value="USD" data-rate="0.0077">🇺🇸 USD</option>
-                      <option value="EUR" data-rate="0.0071">🇪🇺 EUR</option>
-                      <option value="GBP" data-rate="0.0061">🇬🇧 GBP</option>
-                      <option value="AED" data-rate="0.028">🇦🇪 AED</option>
-                      <option value="CAD" data-rate="0.0105">🇨🇦 CAD</option>
-                      <option value="ZAR" data-rate="0.14">🇿🇦 ZAR</option>
-                      <option value="UGX" data-rate="28.5">🇺🇬 UGX</option>
-                      <option value="TZS" data-rate="20.0">🇹🇿 TZS</option>
+                      <option value="KES" selected>🇰🇪 KES</option>
                     </select>
                   </div>
                   <select id="budget" name="budget">
                     <option value="">Select a range</option>
-                    <option data-min="0" data-max="50000">Below 50,000</option>
-                    <option data-min="50000" data-max="100000">50,000–100,000</option>
-                    <option data-min="100000" data-max="250000">100,000–250,000</option>
-                    <option data-min="250000" data-max="500000">250,000–500,000</option>
-                    <option data-min="500000" data-max="1000000">500,000–1,000,000</option>
-                    <option data-min="1000000">Above 1,000,000</option>
+                    <option data-min="0" data-max="50000">Below KES 50,000</option>
+                    <option data-min="50000" data-max="100000">KES 50,000–100,000</option>
+                    <option data-min="100000" data-max="250000">KES 100,000–250,000</option>
+                    <option data-min="250000" data-max="500000">KES 250,000–500,000</option>
+                    <option data-min="500000" data-max="1000000">KES 500,000–1,000,000</option>
+                    <option data-min="1000000">Above KES 1,000,000</option>
                     <option value="Not yet determined">Not yet determined</option>
                   </select>
+                  <small class="rates-credit" data-rates-credit hidden>
+                    Converted at exchange rates as of <span data-rates-date></span>.
+                    <a href="https://www.exchangerate-api.com" rel="noopener">Rates By Exchange Rate API</a>
+                  </small>
                 </div>
                 <div class="form-field">
                   <label for="timeline">When do you need it?</label>
@@ -290,6 +331,10 @@
                 name="_subject"
                 value="New project enquiry — Skyshade"
               />
+              <input type="hidden" name="package" id="f_package" />
+              <input type="hidden" name="package_price_kes" id="f_package_price" />
+              <input type="hidden" name="budget_kes" id="f_budget_kes" />
+              <input type="hidden" name="currency_viewed" id="f_currency" />
               <button class="btn btn-primary" type="submit">
                 Send enquiry ↗
               </button>
@@ -339,8 +384,7 @@
           <div>
             <div class="footer-title">Company</div>
             <div class="footer-links">
-              <a href="about">About</a><a href="work">Project type</a
-              ><a href="faq">FAQs</a>
+              <a href="about">About</a><a href="faq">FAQs</a>
             </div>
           </div>
           <div>
@@ -359,56 +403,148 @@
       </div>
     </footer>
 
-    <!-- Budget Range Currency Converter Script -->
+    <!-- Package, currency and budget handling (uses assets/currency.js) -->
+    <script src="assets/currency.js" defer></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const picker = document.getElementById("formCurrencyPicker");
-        const budgetSelect = document.getElementById("budget");
+        const SC = window.SkyCurrency;
+        const $ = (id) => document.getElementById(id);
+        const picker = $("formCurrencyPicker");
+        const budget = $("budget");
+        const service = $("service");
+        const summary = $("packageSummary");
+        const form = document.querySelector("[data-contact-form]");
+        if (!SC || !picker || !budget || !form) return;
 
-        function formatNum(num) {
-          return Math.round(num).toLocaleString("en-US");
+        const f = {
+          pkg: $("f_package"),
+          pkgPrice: $("f_package_price"),
+          budgetKes: $("f_budget_kes"),
+          cur: $("f_currency"),
+          subject: form.querySelector('[name="_subject"]'),
+        };
+        const baseSubject = f.subject ? f.subject.value : "";
+
+        // Pricing-page package names -> options in the "What do you need?" list.
+        const SERVICE_MAP = {
+          "Starter Website": "Website development",
+          "Business Website and Payments": "E-commerce and payments",
+          "Booking or Ordering System": "Booking or ordering system",
+          "Android Application": "Android application",
+          "Institution Portal": "Institution portal",
+          "Custom Software": "Custom software",
+          "Care Basic": "IT consulting and support",
+          "Care Plus": "IT consulting and support",
+          "Institution Support": "IT consulting and support",
+        };
+
+        const params = new URLSearchParams(location.search);
+        const num = (v) => (v === null || v === "" || isNaN(parseFloat(v)) ? null : parseFloat(v));
+        const kes = (n) => "KES " + SC.amount(n, "KES");
+
+        let pkg = null;
+        if (params.get("service")) {
+          pkg = {
+            key: params.get("service"),
+            name: params.get("plan") || params.get("service"),
+            min: num(params.get("min")),
+            max: num(params.get("max")),
+            plus: params.get("plus") === "1",
+            monthly: params.get("per") === "month",
+          };
         }
 
-        function updateBudgetRanges(code, rate) {
-          const options = budgetSelect.querySelectorAll("option[data-min]");
-          options.forEach((opt) => {
-            const min = parseFloat(opt.dataset.min) * rate;
-            const max = opt.dataset.max ? parseFloat(opt.dataset.max) * rate : null;
+        SC.populate(picker, true);
+        const startCode = SC.has(params.get("cur")) ? params.get("cur") : SC.getSaved();
+        picker.value = startCode;
 
-            if (min === 0 && max) {
-              opt.textContent = `Below ${code} ${formatNum(max)}`;
-              opt.value = `Below ${code} ${formatNum(max)}`;
-            } else if (max) {
-              opt.textContent = `${code} ${formatNum(min)}–${formatNum(max)}`;
-              opt.value = `${code} ${formatNum(min)}–${formatNum(max)}`;
-            } else {
-              opt.textContent = `Above ${code} ${formatNum(min)}`;
-              opt.value = `Above ${code} ${formatNum(min)}`;
-            }
+        function pkgPriceKes() {
+          if (!pkg || pkg.min === null) return "Custom quote";
+          const body = pkg.min === pkg.max ? kes(pkg.min) : kes(pkg.min) + "–" + SC.amount(pkg.max, "KES");
+          return body + (pkg.plus ? "+" : "") + (pkg.monthly ? " / month" : "");
+        }
+
+        function pkgPriceShown(code) {
+          if (!pkg || pkg.min === null) return "Custom quote based on scope";
+          const body = pkg.min === pkg.max ? code + " " + SC.amount(pkg.min, code) : SC.range(pkg.min, pkg.max, code);
+          const text = body + (pkg.plus ? "+" : "") + (pkg.monthly ? " / month" : "");
+          return code === "KES" ? text : text + " (" + pkgPriceKes() + ")";
+        }
+
+        function renderBudget(code) {
+          budget.querySelectorAll("option[data-min]").forEach((o) => {
+            const min = +o.dataset.min;
+            const max = o.dataset.max ? +o.dataset.max : null;
+            let t;
+            if (min === 0) t = "Below " + code + " " + SC.amount(max, code);
+            else if (max) t = SC.range(min, max, code);
+            else t = "Above " + code + " " + SC.amount(min, code);
+            o.textContent = t;
+            o.value = t;
           });
         }
 
-        picker.addEventListener("change", (e) => {
-          const selectedOption = picker.options[picker.selectedIndex];
-          const code = selectedOption.value;
-          const rate = parseFloat(selectedOption.dataset.rate);
+        // Normalised KES copy of the budget, so every enquiry reads the same whatever currency was viewed.
+        function syncBudgetField() {
+          const o = budget.options[budget.selectedIndex];
+          if (!o || o.dataset.min === undefined) { f.budgetKes.value = o ? o.value : ""; return; }
+          const min = +o.dataset.min;
+          const max = o.dataset.max ? +o.dataset.max : null;
+          f.budgetKes.value = min === 0 ? "Below " + kes(max) : max ? kes(min) + "–" + SC.amount(max, "KES") : "Above " + kes(min);
+        }
 
-          updateBudgetRanges(code, rate);
+        function renderSummary(code) {
+          if (!pkg) {
+            summary.hidden = true;
+            f.pkg.value = f.pkgPrice.value = "";
+            if (f.subject) f.subject.value = baseSubject;
+            return;
+          }
+          summary.hidden = false;
+          summary.querySelector("[data-pkg-name]").textContent = pkg.name;
+          summary.querySelector("[data-pkg-price]").textContent = " – " + pkgPriceShown(code);
+          f.pkg.value = pkg.name;
+          f.pkgPrice.value = pkgPriceKes();
+          if (f.subject) f.subject.value = baseSubject.split(" — ")[0] + " — " + pkg.name;
+        }
 
-          try {
-            localStorage.setItem("skyshade-currency", code);
-          } catch (err) {}
+        function refresh() {
+          const code = picker.value;
+          SC.save(code);
+          renderBudget(code);
+          renderSummary(code);
+          f.cur.value = code;
+          syncBudgetField();
+          const credit = document.querySelector("[data-rates-credit]");
+          if (credit) {
+            credit.hidden = !(SC.isLive && code !== "KES");
+            const d = credit.querySelector("[data-rates-date]");
+            if (d) d.textContent = SC.asOf;
+          }
+        }
+
+        // Preselect the service and the budget range that contains the package's middle price.
+        if (pkg) {
+          const wanted = SERVICE_MAP[pkg.key];
+          if (service && wanted && [...service.options].some((o) => o.value === wanted)) service.value = wanted;
+          if (pkg.min !== null && pkg.max !== null && !pkg.monthly) {
+            const mid = (pkg.min + pkg.max) / 2;
+            const opts = [...budget.querySelectorAll("option[data-min]")];
+            const hit = opts.find((o) => mid >= +o.dataset.min && (!o.dataset.max || mid < +o.dataset.max));
+            if (hit) budget.selectedIndex = [...budget.options].indexOf(hit);
+          }
+        }
+
+        picker.addEventListener("change", refresh);
+        window.addEventListener("skyshade:rates", refresh);
+        budget.addEventListener("change", syncBudgetField);
+        summary.querySelector("[data-pkg-clear]").addEventListener("click", () => {
+          pkg = null;
+          history.replaceState(null, "", location.pathname + "#contact-form");
+          refresh();
         });
 
-        // Sync initial state with saved currency
-        try {
-          const savedCurrency = localStorage.getItem("skyshade-currency");
-          if (savedCurrency && picker.querySelector(`option[value="${savedCurrency}"]`)) {
-            picker.value = savedCurrency;
-            const option = picker.querySelector(`option[value="${savedCurrency}"]`);
-            updateBudgetRanges(savedCurrency, parseFloat(option.dataset.rate));
-          }
-        } catch (err) {}
+        refresh();
       });
     </script>
 
