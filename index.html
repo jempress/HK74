@@ -74,6 +74,20 @@
         const theme = localStorage.getItem("skyshade-theme");
         if (theme) document.documentElement.dataset.theme = theme;
       } catch (error) {}
+
+      (function () {
+        try {
+          var t = localStorage.getItem("skyshade-theme");
+          if (t !== "light" && t !== "dark") {
+            t = matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          }
+          document.documentElement.dataset.theme = t;
+        } catch (e) {
+          document.documentElement.dataset.theme = "light";
+        }
+      })();
     </script>
   </head>
 
