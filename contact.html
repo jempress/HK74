@@ -14,15 +14,27 @@
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://skyshade.co.ke/contact" />
 
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Skyshade | Websites, software and IT consulting in Kenya">
-    <meta property="og:description" content="Technology, made dependable. Websites, software and IT consulting for businesses and institutions in Kenya.">
-    <meta property="og:image" content="https://www.skyshade.co.ke/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:url" content="https://www.skyshade.co.ke/">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://www.skyshade.co.ke/og-image.jpg">
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Skyshade | Websites, software and IT consulting in Kenya"
+    />
+    <meta
+      property="og:description"
+      content="Technology, made dependable. Websites, software and IT consulting for businesses and institutions in Kenya."
+    />
+    <meta
+      property="og:image"
+      content="https://www.skyshade.co.ke/og-image.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://www.skyshade.co.ke/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:image"
+      content="https://www.skyshade.co.ke/og-image.jpg"
+    />
 
     <meta name="theme-color" content="#f5f8fb" />
 
@@ -88,9 +100,18 @@
         border-color: rgba(255, 255, 255, 0.18);
         border-left-color: #1e86da;
       }
-      .package-summary[hidden] { display: none; }
-      .rates-credit { display: block; margin-top: 6px; font-size: 0.8rem; opacity: 0.75; }
-      .rates-credit[hidden] { display: none; }
+      .package-summary[hidden] {
+        display: none;
+      }
+      .rates-credit {
+        display: block;
+        margin-top: 6px;
+        font-size: 0.8rem;
+        opacity: 0.75;
+      }
+      .rates-credit[hidden] {
+        display: none;
+      }
       .package-summary .package-label {
         display: block;
         font-size: 0.75rem;
@@ -98,11 +119,24 @@
         letter-spacing: 0.06em;
         opacity: 0.7;
       }
-      .package-summary small { display: block; opacity: 0.75; margin-top: 2px; }
-      .package-actions { display: flex; gap: 14px; align-items: center; }
+      .package-summary small {
+        display: block;
+        opacity: 0.75;
+        margin-top: 2px;
+      }
+      .package-actions {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
       .package-actions button {
-        background: none; border: 0; padding: 0; font: inherit;
-        color: inherit; text-decoration: underline; cursor: pointer;
+        background: none;
+        border: 0;
+        padding: 0;
+        font: inherit;
+        color: inherit;
+        text-decoration: underline;
+        cursor: pointer;
       }
     </style>
 
@@ -167,7 +201,6 @@
       <section class="page-hero">
         <div class="container">
           <div class="breadcrumb"><a href="index">Home</a> / Contact</div>
-          <span class="eyebrow">Start a conversation</span>
           <h1>Tell us what you want to make possible.</h1>
           <p>
             Share a little about your organisation and the challenge you are
@@ -209,7 +242,10 @@
                 <span class="package-label">Package you selected</span>
                 <strong data-pkg-name></strong>
                 <span data-pkg-price></span>
-                <small>Indicative price only. Your final quotation depends on scope.</small>
+                <small
+                  >Indicative price only. Your final quotation depends on
+                  scope.</small
+                >
               </div>
               <div class="package-actions">
                 <a href="pricing">Change</a>
@@ -273,23 +309,42 @@
                 <div class="form-field">
                   <div class="label-with-currency">
                     <label for="budget">Estimated budget</label>
-                    <select id="formCurrencyPicker" class="currency-select-inline" aria-label="Select currency for budget ranges">
+                    <select
+                      id="formCurrencyPicker"
+                      class="currency-select-inline"
+                      aria-label="Select currency for budget ranges"
+                    >
                       <option value="KES" selected>🇰🇪 KES</option>
                     </select>
                   </div>
                   <select id="budget" name="budget">
                     <option value="">Select a range</option>
-                    <option data-min="0" data-max="50000">Below KES 50,000</option>
-                    <option data-min="50000" data-max="100000">KES 50,000–100,000</option>
-                    <option data-min="100000" data-max="250000">KES 100,000–250,000</option>
-                    <option data-min="250000" data-max="500000">KES 250,000–500,000</option>
-                    <option data-min="500000" data-max="1000000">KES 500,000–1,000,000</option>
+                    <option data-min="0" data-max="50000">
+                      Below KES 50,000
+                    </option>
+                    <option data-min="50000" data-max="100000">
+                      KES 50,000–100,000
+                    </option>
+                    <option data-min="100000" data-max="250000">
+                      KES 100,000–250,000
+                    </option>
+                    <option data-min="250000" data-max="500000">
+                      KES 250,000–500,000
+                    </option>
+                    <option data-min="500000" data-max="1000000">
+                      KES 500,000–1,000,000
+                    </option>
                     <option data-min="1000000">Above KES 1,000,000</option>
-                    <option value="Not yet determined">Not yet determined</option>
+                    <option value="Not yet determined">
+                      Not yet determined
+                    </option>
                   </select>
                   <small class="rates-credit" data-rates-credit hidden>
-                    Converted at exchange rates as of <span data-rates-date></span>.
-                    <a href="https://www.exchangerate-api.com" rel="noopener">Rates By Exchange Rate API</a>
+                    Converted at exchange rates as of
+                    <span data-rates-date></span>.
+                    <a href="https://www.exchangerate-api.com" rel="noopener"
+                      >Rates By Exchange Rate API</a
+                    >
                   </small>
                 </div>
                 <div class="form-field">
@@ -332,7 +387,11 @@
                 value="New project enquiry — Skyshade"
               />
               <input type="hidden" name="package" id="f_package" />
-              <input type="hidden" name="package_price_kes" id="f_package_price" />
+              <input
+                type="hidden"
+                name="package_price_kes"
+                id="f_package_price"
+              />
               <input type="hidden" name="budget_kes" id="f_budget_kes" />
               <input type="hidden" name="currency_viewed" id="f_currency" />
               <button class="btn btn-primary" type="submit">
@@ -439,7 +498,8 @@
         };
 
         const params = new URLSearchParams(location.search);
-        const num = (v) => (v === null || v === "" || isNaN(parseFloat(v)) ? null : parseFloat(v));
+        const num = (v) =>
+          v === null || v === "" || isNaN(parseFloat(v)) ? null : parseFloat(v);
         const kes = (n) => "KES " + SC.amount(n, "KES");
 
         let pkg = null;
@@ -455,19 +515,28 @@
         }
 
         SC.populate(picker, true);
-        const startCode = SC.has(params.get("cur")) ? params.get("cur") : SC.getSaved();
+        const startCode = SC.has(params.get("cur"))
+          ? params.get("cur")
+          : SC.getSaved();
         picker.value = startCode;
 
         function pkgPriceKes() {
           if (!pkg || pkg.min === null) return "Custom quote";
-          const body = pkg.min === pkg.max ? kes(pkg.min) : kes(pkg.min) + "–" + SC.amount(pkg.max, "KES");
+          const body =
+            pkg.min === pkg.max
+              ? kes(pkg.min)
+              : kes(pkg.min) + "–" + SC.amount(pkg.max, "KES");
           return body + (pkg.plus ? "+" : "") + (pkg.monthly ? " / month" : "");
         }
 
         function pkgPriceShown(code) {
           if (!pkg || pkg.min === null) return "Custom quote based on scope";
-          const body = pkg.min === pkg.max ? code + " " + SC.amount(pkg.min, code) : SC.range(pkg.min, pkg.max, code);
-          const text = body + (pkg.plus ? "+" : "") + (pkg.monthly ? " / month" : "");
+          const body =
+            pkg.min === pkg.max
+              ? code + " " + SC.amount(pkg.min, code)
+              : SC.range(pkg.min, pkg.max, code);
+          const text =
+            body + (pkg.plus ? "+" : "") + (pkg.monthly ? " / month" : "");
           return code === "KES" ? text : text + " (" + pkgPriceKes() + ")";
         }
 
@@ -487,10 +556,18 @@
         // Normalised KES copy of the budget, so every enquiry reads the same whatever currency was viewed.
         function syncBudgetField() {
           const o = budget.options[budget.selectedIndex];
-          if (!o || o.dataset.min === undefined) { f.budgetKes.value = o ? o.value : ""; return; }
+          if (!o || o.dataset.min === undefined) {
+            f.budgetKes.value = o ? o.value : "";
+            return;
+          }
           const min = +o.dataset.min;
           const max = o.dataset.max ? +o.dataset.max : null;
-          f.budgetKes.value = min === 0 ? "Below " + kes(max) : max ? kes(min) + "–" + SC.amount(max, "KES") : "Above " + kes(min);
+          f.budgetKes.value =
+            min === 0
+              ? "Below " + kes(max)
+              : max
+                ? kes(min) + "–" + SC.amount(max, "KES")
+                : "Above " + kes(min);
         }
 
         function renderSummary(code) {
@@ -502,10 +579,12 @@
           }
           summary.hidden = false;
           summary.querySelector("[data-pkg-name]").textContent = pkg.name;
-          summary.querySelector("[data-pkg-price]").textContent = " – " + pkgPriceShown(code);
+          summary.querySelector("[data-pkg-price]").textContent =
+            " – " + pkgPriceShown(code);
           f.pkg.value = pkg.name;
           f.pkgPrice.value = pkgPriceKes();
-          if (f.subject) f.subject.value = baseSubject.split(" — ")[0] + " — " + pkg.name;
+          if (f.subject)
+            f.subject.value = baseSubject.split(" — ")[0] + " — " + pkg.name;
         }
 
         function refresh() {
@@ -526,11 +605,20 @@
         // Preselect the service and the budget range that contains the package's middle price.
         if (pkg) {
           const wanted = SERVICE_MAP[pkg.key];
-          if (service && wanted && [...service.options].some((o) => o.value === wanted)) service.value = wanted;
+          if (
+            service &&
+            wanted &&
+            [...service.options].some((o) => o.value === wanted)
+          )
+            service.value = wanted;
           if (pkg.min !== null && pkg.max !== null && !pkg.monthly) {
             const mid = (pkg.min + pkg.max) / 2;
             const opts = [...budget.querySelectorAll("option[data-min]")];
-            const hit = opts.find((o) => mid >= +o.dataset.min && (!o.dataset.max || mid < +o.dataset.max));
+            const hit = opts.find(
+              (o) =>
+                mid >= +o.dataset.min &&
+                (!o.dataset.max || mid < +o.dataset.max),
+            );
             if (hit) budget.selectedIndex = [...budget.options].indexOf(hit);
           }
         }
@@ -538,11 +626,13 @@
         picker.addEventListener("change", refresh);
         window.addEventListener("skyshade:rates", refresh);
         budget.addEventListener("change", syncBudgetField);
-        summary.querySelector("[data-pkg-clear]").addEventListener("click", () => {
-          pkg = null;
-          history.replaceState(null, "", location.pathname + "#contact-form");
-          refresh();
-        });
+        summary
+          .querySelector("[data-pkg-clear]")
+          .addEventListener("click", () => {
+            pkg = null;
+            history.replaceState(null, "", location.pathname + "#contact-form");
+            refresh();
+          });
 
         refresh();
       });
