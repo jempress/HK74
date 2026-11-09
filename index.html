@@ -14,7 +14,7 @@
       content="Skyshade Technologies helps businesses and organisations in Kenya build professional websites, e-commerce platforms, custom software, mobile apps and dependable IT solutions."
     />
 
-    <meta name="robots" content="/, follow, max-image-preview:large" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#f5f8fb" />
 
     <meta property="og:type" content="website" />
@@ -47,6 +47,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/hero.css" />
 
     <!-- Skyshade organisation information -->
     <script type="application/ld+json">
@@ -151,62 +152,45 @@
 
     <main id="main">
       <!-- HERO -->
-      <section class="hero">
-        <div class="container hero-grid">
-          <div>
-            <h1>Good technology should make work feel simpler.</h1>
+      <!-- HERO (animated robot) -->
+      <section class="rh">
+        <div class="rh-stage">
+          <div class="rh-layer" data-depth="6"><div class="rh-sun"></div></div>
+          <div class="rh-layer" data-depth="18" id="rh-sparks"></div>
+          <div class="rh-layer" data-depth="30">
+            <div class="rh-robot-wrap">
+              <img
+                class="rh-robot"
+                src="assets/hero-robot.png"
+                alt="A happy robot leaping across a sunset landscape"
+                width="280"
+                height="285"
+              />
+            </div>
+          </div>
+        </div>
 
+        <div class="container rh-content">
+          <div class="rh-copy">
+            <h1>Good technology should make work feel simpler.</h1>
             <p>
               We design and build websites, business software and digital tools
               that help organisations serve customers, manage operations and
               move forward with confidence.
             </p>
-
             <div class="hero-actions">
-              <a class="btn btn-primary" href="contact">
-                Tell us what you need ↗
-              </a>
-              <a class="btn btn-outline" href="services">
-                Explore our services
-              </a>
+              <a class="btn btn-primary" href="contact"
+                >Tell us what you need ↗</a
+              >
+              <a class="btn btn-outline" href="services"
+                >Explore our services</a
+              >
             </div>
-
-            <!-- CLICKABLE TAGS -->
             <div class="tag-list">
               <a href="services#web" class="tag">Web development</a>
               <a href="services#software" class="tag">Custom software</a>
               <a href="services#consulting" class="tag">IT consulting</a>
             </div>
-          </div>
-
-          <div
-            class="hero-visual"
-            aria-label="Business technology illustration"
-          >
-            <div class="visual-panel">
-              <div class="visual-top">
-                <span>BUSINESS OVERVIEW</span>
-                <span class="visual-dots"> <i></i><i></i><i></i> </span>
-              </div>
-
-              <div class="visual-chart">
-                <span></span><span></span><span></span> <span></span
-                ><span></span><span></span>
-              </div>
-
-              <div class="visual-foot">
-                <div class="visual-stat">
-                  <strong>Connected</strong>
-                  <small>Systems that work together</small>
-                </div>
-                <div class="visual-stat">
-                  <strong>Clear</strong>
-                  <small>Information at a glance</small>
-                </div>
-              </div>
-            </div>
-
-            <div class="floating-note">✦ Built around your needs</div>
           </div>
         </div>
       </section>
@@ -438,5 +422,6 @@
 
     <script src="assets/site.js" defer></script>
     <script src="assets/search.js" defer></script>
+    <script src="assets/hero.js" defer></script>
   </body>
 </html>
