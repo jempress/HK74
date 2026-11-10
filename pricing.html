@@ -123,6 +123,79 @@
         opacity: 0.75;
         margin: -1rem 0 1.75rem;
       }
+      /* ---------- Currency picker: running light ---------- */
+      @property --ss-angle {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+
+      .currency-tool {
+        position: relative;
+        isolation: isolate;
+        --ss-light: #14b87f;
+      }
+      html[data-theme="dark"] .currency-tool {
+        --ss-light: #7dffc9;
+      }
+
+      /* the light: a comet that orbits the border (::before) plus its blurred glow (::after) */
+      .currency-tool::before,
+      .currency-tool::after {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        padding: 2px;
+        border-radius: inherit;
+        pointer-events: none;
+        background: conic-gradient(
+          from var(--ss-angle),
+          transparent 0deg 235deg,
+          color-mix(in srgb, var(--ss-light) 25%, transparent) 290deg,
+          var(--ss-light) 345deg,
+          #fff 360deg
+        );
+        /* hollow out the middle so only the border ring is lit */
+        -webkit-mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        animation: ss-orbit 2.6s linear infinite;
+      }
+      .currency-tool::after {
+        inset: -3px;
+        padding: 4px;
+        filter: blur(7px);
+        opacity: 0.75;
+      }
+      @keyframes ss-orbit {
+        to {
+          --ss-angle: 360deg;
+        }
+      }
+
+      /* once the visitor has used the picker, calm down to a quiet highlighted border */
+      .currency-tool.is-seen::before,
+      .currency-tool.is-seen::after {
+        display: none;
+      }
+      .currency-tool.is-seen {
+        border-color: color-mix(in srgb, var(--ss-light) 45%, transparent);
+      }
+
+      /* reduced motion: a still, soft ring instead of movement */
+      @media (prefers-reduced-motion: reduce) {
+        .currency-tool::before,
+        .currency-tool::after {
+          animation: none;
+          background: var(--ss-light);
+          opacity: 0.45;
+        }
+      }
     </style>
 
     <script>
@@ -539,6 +612,18 @@
         const SC = window.SkyCurrency;
         const picker = document.getElementById("currencyPicker");
         const note = document.querySelector("[data-currency-note]");
+        const tool = picker && picker.closest(".currency-tool");
+        const SEEN = "skyshade-currency-seen";
+        const markSeen = () => {
+          tool?.classList.add("is-seen");
+          try {
+            localStorage.setItem(SEEN, "1");
+          } catch (e) {}
+        };
+        try {
+          if (localStorage.getItem(SEEN)) tool?.classList.add("is-seen");
+        } catch (e) {}
+        picker?.addEventListener("focus", markSeen, { once: true });
         if (!SC || !picker) return;
 
         SC.populate(picker);
